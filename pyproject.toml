@@ -1,7 +1,7 @@
 [project]
 name = "agent-output"
 version = "0.1.0"
-description = "Drastically reduce token consumption for unittest and pytest"
+description = "Drastically reduce token consumption for unittest and pytest runs"
 readme = "README.md"
 authors = [
     { name = "Einenlum", email = "contact@einenlum.com" }
