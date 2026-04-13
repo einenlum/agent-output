@@ -9,7 +9,6 @@ authors = [
 requires-python = ">=3.11"
 dependencies = [
     "ai-agent-detector>=0.2.0",
-    "pytest>=8.0",
 ]
 
 [project.entry-points."pytest11"]
@@ -29,5 +28,6 @@ norecursedirs = ["tests/fixtures"]
 [dependency-groups]
 dev = [
     "mypy>=1.20.1",
+    "pytest>=8.0",
     "ruff>=0.15.10",
 ]
