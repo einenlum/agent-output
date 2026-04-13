@@ -7,6 +7,9 @@ class Driver(ABC):
     @abstractmethod
     def build_result(self) -> dict | None: ...
 
+    def collect_warning(self) -> None:
+        pass
+
 
 def resolve_driver(argv: list[str]) -> Driver | None:
     joined = " ".join(argv)

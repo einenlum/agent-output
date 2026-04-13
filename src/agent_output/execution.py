@@ -7,20 +7,20 @@ import time
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from agent_output.agent_detector import Agent
+    from ai_agent_detector import Result
     from agent_output.drivers.base import Driver
 
 
 class Execution:
     _instance: Execution | None = None
 
-    def __init__(self, agent: Agent, driver: Driver) -> None:
+    def __init__(self, agent: Result, driver: Driver) -> None:
         self.agent = agent
         self.driver = driver
         self.start_time = time.monotonic()
 
     @classmethod
-    def start(cls, agent: Agent, argv: list[str]) -> None:
+    def start(cls, agent: Result, argv: list[str]) -> None:
         from agent_output.drivers.base import resolve_driver
 
         driver = resolve_driver(argv)

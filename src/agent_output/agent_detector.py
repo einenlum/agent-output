@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from ai_agent_detector import detect as _detect
-from ai_agent_detector import Agent
+from ai_agent_detector import Result
+from ai_agent_detector import detect_agent as _detect_agent
 
 
-def detect() -> Agent | None:
-    return _detect()
+def detect() -> Result | None:
+    result = _detect_agent()
+    if result.is_agent:
+        return result
+    return None

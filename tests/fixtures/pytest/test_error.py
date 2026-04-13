@@ -1,2 +1,10 @@
-def test_will_error():
-    raise RuntimeError("unexpected error")
+import pytest
+
+
+@pytest.fixture
+def broken_fixture():
+    raise RuntimeError("error in fixture setup")
+
+
+def test_with_error(broken_fixture):
+    pass

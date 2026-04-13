@@ -46,8 +46,9 @@ class PytestDriver(Driver):
             self._xpassed += 1
             return
         self._passed += 1
-        if hasattr(report, "warnings"):
-            self._warnings += len(report.warnings)
+
+    def collect_warning(self) -> None:
+        self._warnings += 1
 
     def _collect_failed(self, report: pytest.TestReport) -> None:
         self._failed += 1
@@ -63,6 +64,8 @@ class PytestDriver(Driver):
         if report.outcome == "failed":
             self._errors += 1
             self._error_details.append(_extract_failure(report))
+        elif report.outcome == "skipped" and report.when == "setup":
+            self._skipped += 1
 
     def build_result(self) -> dict | None:
         total = self._passed + self._failed + self._skipped + self._xfailed + self._xpassed

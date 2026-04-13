@@ -16,8 +16,9 @@ def run_with(
     env = {**os.environ}
     if with_agent:
         env["AI_AGENT"] = "1"
+        env.pop("AGENT_OUTPUT_DISABLE", None)
     else:
-        env.pop("AI_AGENT", None)
+        env["AGENT_OUTPUT_DISABLE"] = "1"
     cmd = ["python", "-m", runner, fixture_path, *extra_args]
     return subprocess.run(cmd, capture_output=True, text=True, env=env)
 
