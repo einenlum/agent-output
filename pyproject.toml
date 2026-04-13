@@ -1,14 +1,26 @@
 [project]
 name = "agent-output"
 version = "0.1.0"
-description = "Add your description here"
+description = "Drastically reduce token consumption for unittest and pytest"
 readme = "README.md"
 authors = [
     { name = "Einenlum", email = "contact@einenlum.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "ai-agent-detector>=0.2.0",
+    "pytest>=8.0",
+]
+
+[project.entry-points."pytest11"]
+agent_output = "agent_output.pytest_plugin"
 
 [build-system]
 requires = ["uv_build>=0.9.7,<0.10.0"]
 build-backend = "uv_build"
+
+[tool.setuptools.data-files]
+"." = ["agent_output.pth"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
