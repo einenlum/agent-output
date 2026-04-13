@@ -25,3 +25,8 @@ data = { purelib = "data/purelib" }
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 norecursedirs = ["tests/fixtures"]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.20.1",
+]
