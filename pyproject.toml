@@ -23,7 +23,8 @@ data = { purelib = "data/purelib" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-norecursedirs = ["tests/fixtures"]
+# norecursedirs = ["tests/fixtures"]
+addopts = "--ignore=tests/fixtures"
 
 [dependency-groups]
 dev = [
