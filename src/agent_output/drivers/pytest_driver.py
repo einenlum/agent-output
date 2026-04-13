@@ -68,7 +68,9 @@ class PytestDriver(Driver):
             self._skipped += 1
 
     def build_result(self) -> dict | None:
-        total = self._passed + self._failed + self._skipped + self._xfailed + self._xpassed
+        total = (
+            self._passed + self._failed + self._skipped + self._xfailed + self._xpassed
+        )
         duration_ms = int((time.monotonic() - self._start_time) * 1000)
 
         data: dict = {

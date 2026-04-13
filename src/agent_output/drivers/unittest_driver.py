@@ -8,14 +8,18 @@ from types import TracebackType
 
 from agent_output.drivers.base import Driver
 
-_ExcInfo = tuple[type[BaseException], BaseException, TracebackType] | tuple[None, None, None]
+_ExcInfo = (
+    tuple[type[BaseException], BaseException, TracebackType] | tuple[None, None, None]
+)
 _UNITTEST_DIR = os.path.dirname(unittest.__file__) + os.sep
 
 
 def _extract_location(tb: TracebackType) -> tuple[str, int]:
     frames = traceback.extract_tb(tb)
     for frame in reversed(frames):
-        if not frame.filename.startswith("<") and not frame.filename.startswith(_UNITTEST_DIR):
+        if not frame.filename.startswith("<") and not frame.filename.startswith(
+            _UNITTEST_DIR
+        ):
             return frame.filename, frame.lineno or 0
     last = frames[-1]
     return last.filename, last.lineno or 0
@@ -104,11 +108,7 @@ class UnittestDriver(Driver):
 
     def build_result(self) -> dict | None:
         total = (
-            self._passed
-            + self._failed
-            + self._skipped
-            + self._xfailed
-            + self._xpassed
+            self._passed + self._failed + self._skipped + self._xfailed + self._xpassed
         )
         duration_ms = int((time.monotonic() - self._start_time) * 1000)
 
