@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "Einenlum", email = "contact@einenlum.com" }
 ]
-requires-python = ">=3.14"
+requires-python = ">=3.11"
 dependencies = [
     "ai-agent-detector>=0.2.0",
     "pytest>=8.0",
