@@ -19,8 +19,8 @@ agent_output = "agent_output.pytest_plugin"
 requires = ["uv_build>=0.9.7,<0.10.0"]
 build-backend = "uv_build"
 
-[tool.setuptools.data-files]
-"." = ["agent_output.pth"]
+[tool.uv.build-backend]
+data = { purelib = "data/purelib" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
