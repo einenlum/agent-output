@@ -1,2 +1,1 @@
-def hello() -> str:
-    return "Hello from agent-output!"
+from __future__ import annotations
