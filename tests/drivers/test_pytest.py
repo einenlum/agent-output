@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import os
 
-import pytest
-
 from tests.helpers import decode_output, run_with
 
 FIXTURES = os.path.join(os.path.dirname(__file__), "..", "fixtures", "pytest")

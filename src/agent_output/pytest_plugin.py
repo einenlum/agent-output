@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
+from agent_output.drivers.pytest_driver import PytestDriver
 from agent_output.execution import Execution
 
 if TYPE_CHECKING:
@@ -19,7 +20,9 @@ def pytest_configure(config: pytest.Config) -> None:
 
 class AgentOutputPlugin:
     def pytest_runtest_logreport(self, report: pytest.TestReport) -> None:
-        Execution.current().driver.collect(report)
+        driver = Execution.current().driver
+        assert isinstance(driver, PytestDriver)
+        driver.collect(report)
 
     def pytest_warning_recorded(
         self,

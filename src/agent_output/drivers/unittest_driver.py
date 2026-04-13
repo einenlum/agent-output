@@ -8,7 +8,7 @@ from types import TracebackType
 
 from agent_output.drivers.base import Driver
 
-_ExcInfo = tuple[type[BaseException], BaseException, TracebackType]
+_ExcInfo = tuple[type[BaseException], BaseException, TracebackType] | tuple[None, None, None]
 _UNITTEST_DIR = os.path.dirname(unittest.__file__) + os.sep
 
 
@@ -32,6 +32,8 @@ class AgentOutputTestResult(unittest.TestResult):
     def addFailure(self, test: unittest.TestCase, err: _ExcInfo) -> None:
         self._driver._failed += 1
         _, exc_value, tb = err
+        if tb is None or exc_value is None:
+            return
         file, line = _extract_location(tb)
         self._driver._failures.append(
             {
@@ -45,6 +47,8 @@ class AgentOutputTestResult(unittest.TestResult):
     def addError(self, test: unittest.TestCase, err: _ExcInfo) -> None:
         self._driver._errors += 1
         _, exc_value, tb = err
+        if tb is None or exc_value is None:
+            return
         file, line = _extract_location(tb)
         self._driver._error_details.append(
             {
@@ -95,8 +99,8 @@ class UnittestDriver(Driver):
                 test(result)
                 return result
 
-        unittest.TextTestRunner = _Runner  # type: ignore[misc]
-        unittest.runner.TextTestRunner = _Runner  # type: ignore[misc]
+        unittest.TextTestRunner = _Runner  # type: ignore[misc, assignment]
+        unittest.runner.TextTestRunner = _Runner  # type: ignore[misc, assignment]
 
     def build_result(self) -> dict | None:
         total = (
