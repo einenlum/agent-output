@@ -4,6 +4,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 
 
 def run_with(
@@ -19,7 +20,7 @@ def run_with(
         env.pop("AGENT_OUTPUT_DISABLE", None)
     else:
         env["AGENT_OUTPUT_DISABLE"] = "1"
-    cmd = ["python", "-m", runner, fixture_path, *extra_args]
+    cmd = [sys.executable, "-m", runner, fixture_path, *extra_args]
     return subprocess.run(cmd, capture_output=True, text=True, env=env)
 
 
