@@ -2,17 +2,18 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import pytest
+
 from agent_output.execution import Execution
 
 if TYPE_CHECKING:
     import warnings
 
-    import pytest
-    from _pytest.terminal import TerminalReporter
 
-
+@pytest.hookimpl(trylast=True)
 def pytest_configure(config: pytest.Config) -> None:
     if Execution.running():
+        config.pluginmanager.unregister(name="terminalreporter")
         config.pluginmanager.register(AgentOutputPlugin())
 
 
@@ -28,11 +29,3 @@ class AgentOutputPlugin:
         location: tuple[str, int, str] | None,
     ) -> None:
         Execution.current().driver.collect_warning()
-
-    def pytest_terminal_summary(
-        self,
-        terminalreporter: TerminalReporter,
-        exitstatus: pytest.ExitCode,
-        config: pytest.Config,
-    ) -> None:
-        terminalreporter.stats.clear()
