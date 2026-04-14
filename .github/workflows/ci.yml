@@ -25,13 +25,13 @@ jobs:
         run: uv sync --all-groups --no-editable
 
       - name: ruff check
-        run: uv run ruff check .
+        run: uv run --no-sync ruff check .
 
       - name: ruff format
-        run: uv run ruff format --check .
+        run: uv run --no-sync ruff format --check .
 
       - name: mypy
-        run: uv run mypy .
+        run: uv run --no-sync mypy .
 
       - name: pytest
-        run: uv run pytest tests/drivers
+        run: uv run --no-sync pytest tests/drivers
