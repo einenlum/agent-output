@@ -35,11 +35,38 @@ Every character of that output consumes tokens from the agent's context window. 
 
 **agent-output** replaces the entire human-readable terminal output with a single compact JSON line — but *only* when a test run is happening inside an AI agent environment. Regular developer sessions are completely unaffected.
 
+When tests fail, the agent gets the overall result, counts, and precise failure locations — nothing else:
+
 ```json
-{"result":"failed","tests":42,"passed":41,"failed":1,"failures":[{"test":"tests/test_api.py::test_create_user","file":"tests/test_api.py","line":14,"message":"AssertionError: expected 201, got 400"}],"duration_ms":3421}
+{
+  "result": "failed",
+  "tests": 42,
+  "passed": 41,
+  "failed": 1,
+  "failures": [
+    {
+      "test": "tests/test_api.py::test_create_user",
+      "file": "tests/test_api.py",
+      "line": 14,
+      "message": "AssertionError: expected 201, got 400"
+    }
+  ],
+  "duration_ms": 3421
+}
 ```
 
-The agent gets exactly what it needs — overall result, counts, and precise failure locations — in a fraction of the tokens.
+When everything passes, there's nothing to report beyond the essentials:
+
+```json
+{
+  "result": "passed",
+  "tests": 42,
+  "passed": 42,
+  "duration_ms": 2187
+}
+```
+
+Only fields that carry information are included — zero-count fields are omitted entirely.
 
 ## How it works
 
