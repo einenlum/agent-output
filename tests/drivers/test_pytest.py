@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 from tests.helpers import decode_output, run_with
 
@@ -113,3 +114,23 @@ def test_duration() -> None:
     data = decode_output(proc)
     assert "duration_ms" in data
     assert data["duration_ms"] > 0
+
+
+def test_sections_omitted_by_default() -> None:
+    proc = run_with("pytest", fixture("test_failing_with_stdout.py"))
+    data = decode_output(proc)
+    assert "sections" not in data["failures"][0]
+
+
+def test_sections_included_on_last_failed_rerun(tmp_path: Path) -> None:
+    cache = ("-o", f"cache_dir={tmp_path}")
+    run_with("pytest", fixture("test_failing_with_stdout.py"), extra_args=cache)
+    proc = run_with(
+        "pytest",
+        fixture("test_failing_with_stdout.py"),
+        extra_args=(*cache, "--last-failed"),
+    )
+    data = decode_output(proc)
+    assert data["failures"][0]["sections"] == {
+        "Captured stdout call": "printed by the failing test\n"
+    }

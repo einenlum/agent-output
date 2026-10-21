@@ -14,6 +14,9 @@ if TYPE_CHECKING:
 @pytest.hookimpl(trylast=True)
 def pytest_configure(config: pytest.Config) -> None:
     if Execution.running():
+        driver = Execution.current().driver
+        assert isinstance(driver, PytestDriver)
+        driver.include_sections = bool(config.getoption("lf", default=False))
         config.pluginmanager.unregister(name="terminalreporter")
         config.pluginmanager.register(AgentOutputPlugin())
 

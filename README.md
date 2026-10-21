@@ -108,7 +108,7 @@ All fields except `result`, `tests`, `passed`, and `duration_ms` are omitted whe
 | `tests`         | int                       | Total number of tests collected                 |
 | `passed`        | int                       | Tests that passed                               |
 | `failed`        | int                       | Tests that failed                               |
-| `failures`      | list                      | Per-failure details (test, file, line, message) |
+| `failures`      | list                      | Per-failure details (test, file, line, message, and `sections` on `--last-failed` reruns) |
 | `errors`        | int                       | Setup/teardown errors                           |
 | `error_details` | list                      | Per-error details                               |
 | `skipped`       | int                       | Skipped tests                                   |
@@ -120,6 +120,14 @@ All fields except `result`, `tests`, `passed`, and `duration_ms` are omitted whe
 ## Disabling
 
 Set `AGENT_OUTPUT_DISABLE=1` to suppress agent-output even when an agent is detected. Useful in CI or any context where you want normal output regardless.
+
+## Report sections on reruns
+
+A normal run reports only each failure's message. When you rerun the failures with pytest's `--last-failed` (`--lf`), each failure and error also gains a `sections` object mapping its report section titles - such as `"Captured stdout call"` or `"Captured log call"`, plus any sections plugins add - to their content:
+
+```bash
+pytest --last-failed
+```
 
 ## Requirements
 

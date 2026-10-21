@@ -22,6 +22,7 @@ class PytestDriver(Driver):
         self._failures: list[dict] = []
         self._error_details: list[dict] = []
         self._start_time: float = time.monotonic()
+        self.include_sections: bool = False
 
     def collect(self, report: pytest.TestReport) -> None:
         if report.when == "call":
@@ -52,7 +53,7 @@ class PytestDriver(Driver):
 
     def _collect_failed(self, report: pytest.TestReport) -> None:
         self._failed += 1
-        self._failures.append(_extract_failure(report))
+        self._failures.append(self._failure_details(report))
 
     def _collect_skipped(self, wasxfail: bool) -> None:
         if wasxfail:
@@ -63,9 +64,15 @@ class PytestDriver(Driver):
     def _collect_setup_teardown(self, report: pytest.TestReport) -> None:
         if report.outcome == "failed":
             self._errors += 1
-            self._error_details.append(_extract_failure(report))
+            self._error_details.append(self._failure_details(report))
         elif report.outcome == "skipped" and report.when == "setup":
             self._skipped += 1
+
+    def _failure_details(self, report: pytest.TestReport) -> dict:
+        details = _extract_failure(report)
+        if self.include_sections and report.sections:
+            details["sections"] = dict(report.sections)
+        return details
 
     def build_result(self) -> dict | None:
         total = (
